@@ -1,0 +1,52 @@
+# Sample configuration for amtsguide-readiness-spec validators
+# This is a SAMPLE config with placeholder values - not real operational data
+
+thresholds:
+  max_sentence_words: 22        # Einfache Sprache limit
+  max_fact_tokens: 18           # GEO optimization
+  title_length_min: 10
+  title_length_max: 60
+  description_length_min: 50
+  description_length_max: 160
+
+lexicon_rules:
+  # Sample forbidden patterns - replace with your domain-specific rules
+  forbidden_verbs:
+    - "guarantee"
+    - "promise"
+    - "ensure"
+  forbidden_patterns:
+    - "with regard to"
+    - "in terms of"
+    - "a large number of"
+  forbidden_terms:
+    - "definitely"
+    - "always"
+    - "never"
+
+field_policy:
+  # Fields that identify the work product (not factual claims)
+  identity_fields:
+    - "id"
+    - "name"
+    - "slug"
+  
+  # Fields that are commentary, not facts requiring provenance
+  non_fact_fields:
+    - "notes"
+    - "comments"
+    - "internal_notes"
+  
+  # Source requirement policy
+  # Options: none, numbers_only, all, custom
+  require_source: "numbers_only"
+  
+  # Fields exempt from source requirement
+  source_exceptions:
+    - "phone"
+    - "email"
+  
+  # Severity levels
+  missing_source_severity: "warning"      # warning or error
+  missing_verified_at_severity: "error"   # always error
+
