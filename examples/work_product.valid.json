@@ -1,0 +1,38 @@
+{
+  "_metadata": {
+    "extraction_date": "2025-01-15T10:30:00Z",
+    "model": "claude-sonnet-4",
+    "extractor_version": "1.0",
+    "source_file": "example-district.docx"
+  },
+  "district_id": "example-district",
+  "district_name": "Example District",
+  
+  "fee_amount": 25,
+  "fee_amount_source": "https://example.gov/fees",
+  "fee_amount_verified_at": "2025-01-15",
+  
+  "processing_time": "approximately 4 weeks",
+  "processing_time_source": "https://example.gov/processing",
+  "processing_time_verified_at": "2025-01-15",
+  
+  "phone": "+1-555-555-5555",
+  "phone_source": null,
+  "phone_verified_at": "2025-01-15",
+  
+  "email": "contact@example.gov",
+  "email_source": null,
+  "email_verified_at": "2025-01-15",
+  
+  "responsible_authority": "Example Traffic Authority",
+  "responsible_authority_source": "https://example.gov/authority",
+  "responsible_authority_verified_at": "2025-01-15",
+  
+  "online_application": true,
+  "online_application_url": "https://example.gov/apply",
+  "online_application_source": "https://example.gov/services",
+  "online_application_verified_at": "2025-01-15",
+  
+  "notes": "Opening hours: Monday-Friday 9am-5pm. Weekend appointments available by request."
+}
+

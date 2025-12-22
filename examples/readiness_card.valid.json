@@ -1,0 +1,74 @@
+{
+  "id": "extract-district-facts",
+  "title": "Extract District Facts",
+  "context": "Extracts factual information about a district from source documents and produces a structured work product with provenance tracking.",
+  "version": "1.0",
+  "last_updated": "2025-01-15",
+  
+  "input_contract": {
+    "description": "Source document containing district information",
+    "required_fields": [
+      "document_path",
+      "district_id"
+    ],
+    "optional_fields": [
+      "language",
+      "extraction_hints"
+    ]
+  },
+  
+  "output_work_product_contract": {
+    "description": "Structured work product with verified facts",
+    "schema_ref": "schemas/work_product.schema.json",
+    "guaranteed_fields": [
+      "_metadata",
+      "district_id",
+      "district_name"
+    ]
+  },
+  
+  "stop_rules": [
+    {
+      "condition": "Source document is unreadable or corrupted",
+      "action": "block",
+      "reason": "Cannot extract facts from invalid input"
+    },
+    {
+      "condition": "Conflicting facts found in source",
+      "action": "escalate",
+      "reason": "Human must resolve conflicting information"
+    },
+    {
+      "condition": "Numeric fact has no source citation",
+      "action": "warn",
+      "reason": "Numeric claims should be traceable"
+    }
+  ],
+  
+  "human_review_gate": {
+    "description": "A human reviewer must verify extracted facts before publishing",
+    "required_actions": [
+      "Verify all *_verified_at dates are set",
+      "Confirm numeric values match source documents",
+      "Check contact information is current"
+    ],
+    "optional_actions": [
+      "Add additional context in notes field",
+      "Cross-reference with secondary sources"
+    ]
+  },
+  
+  "metric": {
+    "name": "Fact Accuracy Rate",
+    "definition": "Percentage of extracted facts that match source documents on manual audit",
+    "target": ">= 98%"
+  },
+  
+  "non_claims": [
+    "Does not guarantee real-time accuracy after extraction",
+    "Does not automatically update when sources change",
+    "Does not validate compliance with local regulations",
+    "Does not replace official government sources"
+  ]
+}
+

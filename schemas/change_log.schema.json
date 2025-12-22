@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andxblink/amtsguide_public/schemas/change_log.schema.json",
+  "title": "Change Log",
+  "description": "Schema for tracking changes to work product fields (Stand + Änderungsvermerk)",
+  "type": "object",
+  "required": ["work_product_id", "changes"],
+  "properties": {
+    "work_product_id": {
+      "type": "string",
+      "description": "Identifier of the work product being changed"
+    },
+    "changes": {
+      "type": "array",
+      "description": "List of field changes",
+      "items": {
+        "$ref": "#/$defs/change_entry"
+      }
+    }
+  },
+  "$defs": {
+    "change_entry": {
+      "type": "object",
+      "required": ["field", "changed_at", "reason"],
+      "properties": {
+        "field": {
+          "type": "string",
+          "description": "Name of the field that changed (e.g., 'fee_amount')"
+        },
+        "old_value": {
+          "description": "Previous value (any type, nullable for new fields)"
+        },
+        "new_value": {
+          "description": "New value (any type, nullable for deleted fields)"
+        },
+        "changed_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO datetime when the change was made"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Short explanation for why the change was made"
+        },
+        "source_ref": {
+          "type": ["string", "null"],
+          "description": "Reference to source document or URL (use example.com for public examples)"
+        },
+        "changed_by": {
+          "type": ["string", "null"],
+          "description": "Identifier of person or system that made the change"
+        }
+      }
+    }
+  }
+}
+

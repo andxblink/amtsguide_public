@@ -1,0 +1,9 @@
+{
+  "district_id": "example-district",
+  "district_name": "Example District",
+  
+  "fee_amount": 25,
+  "fee_amount_source": "https://example.gov/fees",
+  "fee_amount_verified_at": "2025-01-15"
+}
+

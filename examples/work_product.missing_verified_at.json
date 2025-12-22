@@ -1,0 +1,13 @@
+{
+  "_metadata": {
+    "extraction_date": "2025-01-15T10:30:00Z",
+    "model": "claude-sonnet-4",
+    "extractor_version": "1.0"
+  },
+  "district_id": "example-district",
+  "district_name": "Example District",
+  
+  "fee_amount": 25,
+  "fee_amount_source": "https://example.gov/fees"
+}
+

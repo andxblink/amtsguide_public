@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andxblink/amtsguide_public/schemas/readiness_card.schema.json",
+  "title": "Readiness Card",
+  "description": "Schema for defining an AI operation's contracts and constraints",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "context",
+    "input_contract",
+    "output_work_product_contract",
+    "stop_rules",
+    "human_review_gate",
+    "metric",
+    "non_claims"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Unique identifier for this readiness card (kebab-case)"
+    },
+    "title": {
+      "type": "string",
+      "description": "Human-readable title for the operation"
+    },
+    "context": {
+      "type": "string",
+      "description": "Short description of what this operation does and when it's used"
+    },
+    "input_contract": {
+      "type": "object",
+      "description": "What the operation expects as input",
+      "required": ["description", "required_fields"],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "required_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "optional_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "schema_ref": {
+          "type": "string",
+          "description": "Reference to a JSON schema file"
+        }
+      }
+    },
+    "output_work_product_contract": {
+      "type": "object",
+      "description": "What the operation produces",
+      "required": ["description", "schema_ref"],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "schema_ref": {
+          "type": "string",
+          "description": "Reference to work_product.schema.json or a derivative"
+        },
+        "guaranteed_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "stop_rules": {
+      "type": "array",
+      "description": "Conditions that must cause the operation to stop/escalate",
+      "items": {
+        "type": "object",
+        "required": ["condition", "action"],
+        "properties": {
+          "condition": {
+            "type": "string",
+            "description": "When this rule triggers"
+          },
+          "action": {
+            "type": "string",
+            "enum": ["block", "escalate", "warn"],
+            "description": "What to do when triggered"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Why this rule exists"
+          }
+        }
+      }
+    },
+    "human_review_gate": {
+      "type": "object",
+      "description": "What a human must do before the output is considered valid",
+      "required": ["description", "required_actions"],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "required_actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "optional_actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "metric": {
+      "type": "object",
+      "description": "One measurable outcome to track success",
+      "required": ["name", "definition"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "definition": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        }
+      }
+    },
+    "non_claims": {
+      "type": "array",
+      "description": "Explicit statements of what this operation does NOT claim to do",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of this readiness card"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date",
+      "description": "Date this card was last reviewed"
+    }
+  }
+}
+

@@ -30,12 +30,15 @@ field_policy:
     - "id"
     - "name"
     - "slug"
+    - "district_id"
+    - "district_name"
   
   # Fields that are commentary, not facts requiring provenance
   non_fact_fields:
     - "notes"
     - "comments"
     - "internal_notes"
+    - "online_application_url"  # URL is derived from online_application fact
   
   # Source requirement policy
   # Options: none, numbers_only, all, custom

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andxblink/amtsguide_public/schemas/work_product.schema.json",
+  "title": "Work Product",
+  "description": "Schema for AI-generated work products with provenance tracking",
+  "type": "object",
+  "required": ["_metadata"],
+  "properties": {
+    "_metadata": {
+      "type": "object",
+      "description": "Extraction and generation metadata",
+      "required": ["extraction_date", "model", "extractor_version"],
+      "properties": {
+        "extraction_date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO datetime when the work product was created"
+        },
+        "model": {
+          "type": "string",
+          "description": "AI model used for generation (e.g., 'claude-sonnet-4')"
+        },
+        "extractor_version": {
+          "type": "string",
+          "description": "Version of the extraction/generation pipeline"
+        },
+        "source_file": {
+          "type": ["string", "null"],
+          "description": "Original source file if applicable"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "patternProperties": {
+    "^[a-z_]+_verified_at$": {
+      "type": ["string", "null"],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "ISO date (YYYY-MM-DD) of last human verification for corresponding field"
+    },
+    "^[a-z_]+_source$": {
+      "type": ["string", "null"],
+      "description": "URL or document reference for corresponding field"
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "fact_field_convention": {
+      "description": "Convention: For each factual field X, there should be X_source and X_verified_at companion fields. This is enforced by the WorkProductValidator, not the schema alone."
+    }
+  }
+}
+

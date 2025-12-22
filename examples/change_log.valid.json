@@ -1,0 +1,24 @@
+{
+  "work_product_id": "example-district",
+  "changes": [
+    {
+      "field": "fee_amount",
+      "old_value": 20,
+      "new_value": 25,
+      "changed_at": "2025-01-15T10:30:00Z",
+      "reason": "Annual fee adjustment per official notice",
+      "source_ref": "https://example.gov/notices/2025-001",
+      "changed_by": "reviewer@example.com"
+    },
+    {
+      "field": "phone",
+      "old_value": "+1-555-555-1234",
+      "new_value": "+1-555-555-5555",
+      "changed_at": "2025-01-10T14:00:00Z",
+      "reason": "Phone number changed after office relocation",
+      "source_ref": null,
+      "changed_by": "reviewer@example.com"
+    }
+  ]
+}
+
