@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andxblink/amtsguide_public/schemas/generation_attempt.schema.json",
+  "title": "GenerationAttempt",
+  "description": "Record of a single generation attempt in the pipeline (accept/reject)",
+  "type": "object",
+  "required": ["session_id", "prompt_type", "prompt_version", "prompt_hash", "attempt_number", "outcome", "generated_at"],
+  "properties": {
+    "attempt_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for this attempt"
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Groups attempts for the same document generation session"
+    },
+    "prompt_type": {
+      "type": "string",
+      "enum": ["cluster", "bezirk", "overview", "supplier", "blog"],
+      "description": "Type of prompt used"
+    },
+    "prompt_version": {
+      "type": "string",
+      "description": "Prompt version string (e.g., 'v1.0', 'v1.1')"
+    },
+    "prompt_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{12}$",
+      "description": "SHA256 truncated to 12 hex chars"
+    },
+    "attempt_number": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "1-indexed attempt number (1 = first attempt)"
+    },
+    "outcome": {
+      "type": "string",
+      "enum": ["accepted", "rejected"],
+      "description": "Whether this attempt was accepted or rejected by human reviewer"
+    },
+    "rejection_reason": {
+      "type": ["string", "null"],
+      "examples": ["too_long", "wrong_tone", "factual_error", "missing_info", "formatting"],
+      "description": "Why this attempt was rejected"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this attempt was generated"
+    },
+    "model": {
+      "type": "string",
+      "description": "LLM model used for this attempt"
+    },
+    "city_id": {
+      "type": "string",
+      "description": "City context"
+    },
+    "topic_id": {
+      "type": "string",
+      "description": "Topic context"
+    }
+  }
+}
+

@@ -1,0 +1,15 @@
+{
+  "attempt_id": "550e8400-e29b-41d4-a716-446655440000",
+  "session_id": "abc123-def456-789",
+  "prompt_type": "bezirk",
+  "prompt_version": "v1.0",
+  "prompt_hash": "ae7cca7353ff",
+  "attempt_number": 1,
+  "outcome": "rejected",
+  "rejection_reason": "too_long",
+  "generated_at": "2025-12-27T14:25:00Z",
+  "model": "claude-sonnet-4-20250514",
+  "city_id": "berlin",
+  "topic_id": "halteverbot"
+}
+

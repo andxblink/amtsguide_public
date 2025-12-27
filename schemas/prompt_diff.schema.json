@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andxblink/amtsguide_public/schemas/prompt_diff.schema.json",
+  "title": "PromptDiff",
+  "description": "Semantic diff between two prompt versions with categorized changes",
+  "type": "object",
+  "required": ["v1_hash", "v2_hash", "changes"],
+  "properties": {
+    "v1_path": {
+      "type": "string",
+      "description": "Path to version 1 of the prompt"
+    },
+    "v2_path": {
+      "type": "string",
+      "description": "Path to version 2 of the prompt"
+    },
+    "v1_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{12}$",
+      "description": "SHA256 hash of v1 content (12 chars)"
+    },
+    "v2_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{12}$",
+      "description": "SHA256 hash of v2 content (12 chars)"
+    },
+    "change_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of changes"
+    },
+    "additions": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of additions"
+    },
+    "deletions": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of deletions"
+    },
+    "modifications": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of modifications"
+    },
+    "change_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["constraint", "style", "content", "structure", "example", "instruction", "unknown"]
+      },
+      "description": "Unique types of changes present"
+    },
+    "summary": {
+      "type": "string",
+      "description": "Human-readable summary of changes"
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/PromptChange"
+      },
+      "description": "List of individual changes"
+    },
+    "quality_delta": {
+      "type": "object",
+      "description": "Quality impact of the changes",
+      "properties": {
+        "before": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Composite score before change"
+        },
+        "after": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Composite score after change"
+        },
+        "delta": {
+          "type": "number",
+          "description": "Difference (positive = improvement)"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "PromptChange": {
+      "type": "object",
+      "required": ["type", "description"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["constraint", "style", "content", "structure", "example", "instruction", "unknown"],
+          "description": "Category of change"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of the change"
+        },
+        "old_text": {
+          "type": "string",
+          "description": "Text that was removed or modified (truncated)"
+        },
+        "new_text": {
+          "type": "string",
+          "description": "Text that was added or modified (truncated)"
+        },
+        "line_range": {
+          "type": "array",
+          "items": { "type": "integer" },
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "Start and end line numbers of the change"
+        }
+      }
+    },
+    "ChangeTypeDefinitions": {
+      "description": "Definitions of change type categories",
+      "type": "object",
+      "properties": {
+        "constraint": { "const": "Rules, requirements, limits (must, should, never, max)" },
+        "style": { "const": "Tone, voice, formatting (formal, active voice, Sie-Form)" },
+        "content": { "const": "What to include or exclude in the output" },
+        "structure": { "const": "Organization, sections, headings, order" },
+        "example": { "const": "Examples, templates, samples" },
+        "instruction": { "const": "How to approach the task, methodology" }
+      }
+    }
+  }
+}
+

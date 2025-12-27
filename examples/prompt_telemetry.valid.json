@@ -1,0 +1,24 @@
+{
+  "document_id": "bezirk-mitte-de",
+  "prompt_type": "bezirk",
+  "prompt_version": "bezirk-berlin-v1.0",
+  "prompt_hash": "ae7cca7353ff",
+  "city_id": "berlin",
+  "topic_id": "halteverbot",
+  "generated_at": "2025-12-27T14:30:00Z",
+  "model": "claude-sonnet-4-20250514",
+  "session_id": "abc123-def456-789",
+  "validator_score": 87.5,
+  "validator_passed": true,
+  "attempts_to_acceptance": 2,
+  "rejection_reasons": ["too_long"],
+  "pipeline_efficiency": 50.0,
+  "post_gen_edit_count": 5,
+  "user_edit_count": 2,
+  "ai_correction_count": 3,
+  "post_gen_edit_score": 70.0,
+  "reviewer_count": 1,
+  "reviewers": [],
+  "composite_score": 65.5
+}
+

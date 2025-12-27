@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andxblink/amtsguide_public/schemas/prompt_telemetry.schema.json",
+  "title": "PromptTelemetryRecord",
+  "description": "Telemetry record for AI-generated content with dual human intervention signals",
+  "type": "object",
+  "required": ["document_id", "prompt_type", "prompt_version", "prompt_hash", "generated_at"],
+  "properties": {
+    "document_id": {
+      "type": "string",
+      "description": "Unique identifier for the generated document (e.g., Sanity document ID)"
+    },
+    "prompt_type": {
+      "type": "string",
+      "enum": ["cluster", "bezirk", "overview", "supplier", "blog"],
+      "description": "Type of prompt used for generation"
+    },
+    "prompt_version": {
+      "type": "string",
+      "pattern": "^[a-z]+-[a-z]+-v[0-9]+\\.[0-9]+$",
+      "examples": ["cluster-berlin-v1.0", "bezirk-munich-v2.1"],
+      "description": "Version string following pattern: {type}-{city}-v{major}.{minor}"
+    },
+    "prompt_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{12}$",
+      "description": "SHA256 hash of prompt content, truncated to 12 hex characters"
+    },
+    "city_id": {
+      "type": "string",
+      "default": "berlin",
+      "description": "City identifier for multi-city support"
+    },
+    "topic_id": {
+      "type": "string",
+      "default": "halteverbot",
+      "description": "Topic identifier (e.g., halteverbot, sondernutzung)"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of when content was generated"
+    },
+    "model": {
+      "type": "string",
+      "examples": ["claude-sonnet-4-20250514", "gpt-4o"],
+      "description": "LLM model identifier used for generation"
+    },
+    "session_id": {
+      "type": ["string", "null"],
+      "description": "Links to GenerationAttempt records for this generation session"
+    },
+    "validator_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Automated validation score (0-100) from quality checks"
+    },
+    "validator_passed": {
+      "type": "boolean",
+      "description": "Whether automated validation passed"
+    },
+    "attempts_to_acceptance": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of generation attempts before human accepted output (1 = first try)"
+    },
+    "rejection_reasons": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Reasons why previous attempts were rejected"
+    },
+    "pipeline_efficiency": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Computed: 100 / attempts_to_acceptance (100 = first try success)"
+    },
+    "post_gen_edit_count": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Total number of human edits after AI generation (user + AI corrections)"
+    },
+    "user_edit_count": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "User-initiated edits marked with USER_EDIT: - experimentation/learning, does NOT penalize score"
+    },
+    "ai_correction_count": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "AI corrections (unmarked edits) - mistakes that needed fixing, DOES penalize score"
+    },
+    "post_gen_edit_score": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Computed: max(0, 100 - ai_correction_count * 10). Only AI corrections penalize, not user edits."
+    },
+    "reviewer_count": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "default": 1,
+      "description": "Number of unique people who edited (DEACTIVATED - single user, defaults to 1)"
+    },
+    "reviewers": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of reviewer identifiers (DEACTIVATED - single user)"
+    },
+    "composite_score": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Weighted combination: 20% validator + 40% pipeline_efficiency + 40% post_gen_edit_score"
+    }
+  }
+}
+

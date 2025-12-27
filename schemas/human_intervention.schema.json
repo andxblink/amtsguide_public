@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andxblink/amtsguide_public/schemas/human_intervention.schema.json",
+  "title": "HumanInterventionMetrics",
+  "description": "Dual-signal quality measurement: pipeline iterations + post-generation edits",
+  "type": "object",
+  "properties": {
+    "pipeline_phase": {
+      "type": "object",
+      "description": "Metrics from the generation pipeline (attempts to acceptance)",
+      "required": ["attempts_to_acceptance"],
+      "properties": {
+        "attempts_to_acceptance": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of generation attempts before human accepted (1 = first try)"
+        },
+        "rejection_reasons": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Why each previous attempt was rejected"
+        },
+        "pipeline_efficiency": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "100 / attempts_to_acceptance (100 = perfect, 20 = 5 tries)"
+        }
+      }
+    },
+    "review_phase": {
+      "type": "object",
+      "description": "Metrics from post-generation review in CMS using USER_EDIT: marker convention",
+      "properties": {
+        "post_gen_edit_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total human edits after AI generation (user + AI corrections)"
+        },
+        "user_edit_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "User-initiated edits (marked with USER_EDIT:) - experimentation, does NOT penalize score"
+        },
+        "ai_correction_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "AI corrections (unmarked edits) - mistakes needing fixes, DOES penalize score"
+        },
+        "post_gen_edit_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "max(0, 100 - ai_correction_count * 10). Only AI corrections penalize."
+        },
+        "reviewer_count": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 1,
+          "description": "Number of unique reviewers (DEACTIVATED - single user, defaults to 1)"
+        }
+      }
+    },
+    "composite_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Weighted: 20% validator + 40% pipeline_efficiency + 40% post_gen_edit_score"
+    }
+  },
+  "$defs": {
+    "user_edit_marker_convention": {
+      "description": "Convention for distinguishing user experimentation from AI corrections",
+      "type": "object",
+      "properties": {
+        "marker": {
+          "const": "USER_EDIT:",
+          "description": "Prefix marker for user-initiated edits"
+        },
+        "purpose": {
+          "const": "Allows users to add/modify prompts without penalizing AI quality score"
+        },
+        "usage": {
+          "type": "string",
+          "examples": [
+            "USER_EDIT: Added max 16 words constraint (experimenting)",
+            "USER_EDIT: Changed tone to be more formal (learning)",
+            "Fixed Berlin typo (AI correction - no marker)"
+          ]
+        }
+      }
+    },
+    "quality_interpretation": {
+      "description": "How to interpret the composite score",
+      "type": "object",
+      "properties": {
+        "excellent": {
+          "const": "90-100: Prompt works first time with minimal human fixes"
+        },
+        "good": {
+          "const": "70-89: Minor iterations or edits needed"
+        },
+        "needs_improvement": {
+          "const": "50-69: Multiple attempts or significant edits"
+        },
+        "broken": {
+          "const": "<50: Fundamentally broken prompt"
+        }
+      }
+    },
+    "diagnosis_matrix": {
+      "description": "Matrix for diagnosing prompt issues (uses ai_correction_count, not total edits)",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "iterations": { "type": "string" },
+          "ai_corrections": { "type": "string" },
+          "diagnosis": { "type": "string" }
+        }
+      },
+      "examples": [
+        { "iterations": "1", "ai_corrections": "0-2", "diagnosis": "Excellent prompt - works first time, minimal fixes" },
+        { "iterations": "5", "ai_corrections": "0-2", "diagnosis": "Prompt hard to tune, but produces good final output" },
+        { "iterations": "1", "ai_corrections": "10+", "diagnosis": "Prompt produces 'acceptable' but not publishable content" },
+        { "iterations": "5", "ai_corrections": "10+", "diagnosis": "Prompt is fundamentally broken" }
+      ]
+    }
+  }
+}
+

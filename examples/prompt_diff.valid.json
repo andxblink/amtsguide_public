@@ -1,0 +1,38 @@
+{
+  "v1_path": "prompts/cluster_prompt.txt",
+  "v2_path": "prompts/cluster_prompt_v2.txt",
+  "v1_hash": "ae7cca7353ff",
+  "v2_hash": "bf8ddb8464gg",
+  "change_count": 3,
+  "additions": 1,
+  "deletions": 0,
+  "modifications": 2,
+  "change_types": ["constraint", "style"],
+  "summary": "+1 additions | ~2 modifications (constraint, style)",
+  "changes": [
+    {
+      "type": "constraint",
+      "description": "Added constraint text at line 45",
+      "old_text": "",
+      "new_text": "Maximum 16 words per sentence."
+    },
+    {
+      "type": "style",
+      "description": "Modified style text at line 23",
+      "old_text": "Use active voice.",
+      "new_text": "Use active voice. Avoid Konjunktiv entirely."
+    },
+    {
+      "type": "constraint",
+      "description": "Modified constraint text at line 67",
+      "old_text": "Include relevant facts.",
+      "new_text": "Include exactly 3-5 relevant facts per section."
+    }
+  ],
+  "quality_delta": {
+    "before": 72.5,
+    "after": 85.0,
+    "delta": 12.5
+  }
+}
+
